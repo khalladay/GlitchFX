@@ -3,45 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(GlitchFX))]
-public class GlitchFXEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.DrawDefaultInspector();
+//[CustomEditor(typeof(GlitchFX))]
+//public class GlitchFXEditor : Editor
+//{
+//    public override void OnInspectorGUI()
+//    {
+//        base.DrawDefaultInspector();
 
-        GlitchFX fx = target as GlitchFX;
+//        GlitchFX fx = target as GlitchFX;
 
-        EditorGUILayout.HelpBox("Global Glitch Controls", MessageType.None);
+//        EditorGUILayout.HelpBox("Global Glitch Controls", MessageType.None);
 
-        fx.fxEnabled = EditorGUILayout.Toggle("Glitch FX Enabled", fx.fxEnabled);
-        fx.scale = EditorGUILayout.FloatField("FX ResoltionScale", fx.scale);
-        fx.scale = Mathf.Clamp(fx.scale, 0.01f, 1.0f);
+//        fx.fxEnabled = EditorGUILayout.Toggle("Glitch FX Enabled", fx.fxEnabled);
+//        fx.glitchAmount = EditorGUILayout.FloatField("Glitch Amount", fx.glitchAmount);
+//        fx.glitchAmount = Mathf.Clamp(fx.glitchAmount, 0.0f, 1.0f);
 
-        EditorGUILayout.HelpBox("Visual FX Controls", MessageType.None);
-        fx.blockDamage = EditorGUILayout.Toggle("Block Damage", fx.blockDamage);
-        if (fx.blockDamage)
-        {
-            fx.blockDamageType = (GlitchFX.BlockDamageType)EditorGUILayout.EnumPopup("  Damage Type", fx.blockDamageType);
+//        EditorGUILayout.HelpBox("Visual FX Controls", MessageType.None);
+//        fx.blockDamage = EditorGUILayout.Toggle("Block Damage", fx.blockDamage);
+//        if (fx.blockDamage)
+//        {
+//            fx.blockTexture = EditorGUILayout.ObjectField("Block Damage Map: ", fx.blockTexture,typeof(Texture2D), true) as Texture2D;
 
-            switch (fx.blockDamageType)
-            {
-                case GlitchFX.BlockDamageType.Solid:
-                case GlitchFX.BlockDamageType.Tint:
-                {
-                    fx.blockColor = EditorGUILayout.ColorField("  Color", fx.blockColor);
-                }break;
-                case GlitchFX.BlockDamageType.HueShift:
-                {
+//            fx.blockDamageType = (GlitchFX.BlockDamageType)EditorGUILayout.EnumPopup("  Damage Type", fx.blockDamageType);
 
-                }break;
-                case GlitchFX.BlockDamageType.Shift:
-                {
-                    fx.magnitude = EditorGUILayout.FloatField("  Magnitude", fx.magnitude); 
-                }break;
-            }
+//            switch (fx.blockDamageType)
+//            {
+//                case GlitchFX.BlockDamageType.Solid:
+//                case GlitchFX.BlockDamageType.Tint:
+//                {
+//                    fx.blockColor = EditorGUILayout.ColorField("  Color", fx.blockColor);
+//                }break;
+//                case GlitchFX.BlockDamageType.HueShift:
+//                {
 
-        }
+//                }break;
+//                case GlitchFX.BlockDamageType.Shift:
+//                {
+//                    fx.blockMagnitude = EditorGUILayout.FloatField("  Magnitude", fx.blockMagnitude); 
+//                }break;
+//            }
 
-    }
-}
+//        }
+
+//    }
+//}

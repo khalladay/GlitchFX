@@ -20,6 +20,13 @@ public class BlockDamageMapTool : EditorWindow
     private int _yBlockSizeMin = 8;
     private int _yBlockSizeMax = 64;
 
+
+    private bool _separateGBChannels = false;
+    private float _gMin = 0.0f;
+    private float _gMax = 1.0f;
+    private float _bMin = 0.0f;
+    private float _bMax = 1.0f;
+
     private int _seed = 0;
 
     [MenuItem("KHGlitch/BlockDamageMapTool")]
@@ -34,9 +41,12 @@ public class BlockDamageMapTool : EditorWindow
         bool isValid = true;
         GUI.enabled = true;
 
-        EditorGUILayout.HelpBox("Block Damage Map Generator", MessageType.None);
+        EditorGUILayout.HelpBox("Block Damage Map Generator", MessageType.Info);
+        EditorGUILayout.HelpBox("Block Layout Settings", MessageType.None);
 
         _curTextureSize = EditorGUILayout.IntPopup("Texture Size: ", _curTextureSize, textureSizeNames, textureSizes);
+
+
 
 
         EditorGUILayout.BeginHorizontal();
@@ -77,8 +87,30 @@ public class BlockDamageMapTool : EditorWindow
 
         }
 
-        _seed = EditorGUILayout.IntField("Random Seed", _seed);
 
+        EditorGUILayout.HelpBox("Color Settings", MessageType.None);
+
+        _separateGBChannels = EditorGUILayout.Toggle("Separate GB Channels", _separateGBChannels);
+
+        if (_separateGBChannels) GUI.enabled = true;
+        else GUI.enabled = false;
+
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            _gMin = EditorGUILayout.FloatField("G Min:", _gMin);
+            _gMax = EditorGUILayout.FloatField("G Max:", _gMax);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            _bMin = EditorGUILayout.FloatField("B Min:", _bMin);
+            _bMax = EditorGUILayout.FloatField("B Max:", _bMax);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        GUI.enabled = true;
+
+        _seed = EditorGUILayout.IntField("Random Seed", _seed);
 
         if (!isValid)
         {
@@ -87,7 +119,8 @@ public class BlockDamageMapTool : EditorWindow
         }
         if (GUILayout.Button("Generate"))
         {
-            Texture2D outTex = new Texture2D(_curTextureSize, _curTextureSize, TextureFormat.ARGB32, false);
+            Texture2D outTex = new Texture2D(_curTextureSize, _curTextureSize, TextureFormat.RGBAFloat, false);
+            outTex.filterMode = FilterMode.Point;
             Random.InitState(_seed);
 
             int x = 0;
@@ -98,8 +131,18 @@ public class BlockDamageMapTool : EditorWindow
             {
                 int bWidth = (int)Random.Range(_xBlockSizeMin, _xBlockSizeMax);
 
-                float col = Random.Range(0.0f, 1.0f);
-                Color blockCol = new Color(col, col, col);
+                float r = Random.Range(0.0f, 1.0f);
+
+                float g = _gMin == _gMax ? _gMin :  Mathf.Pow(Random.Range(_gMin, _gMax), 1.0f);
+                float b = _bMin == _bMax ? _bMin : Mathf.Pow(Random.Range(_bMin, _bMax), 1.0f);
+
+                if (!_separateGBChannels)
+                {
+                    g = r;
+                    b = r;
+                }
+
+                Color blockCol = new Color(r, g, b);
 
                 if (bWidth + x > _curTextureSize) bWidth -= ((bWidth + x) - _curTextureSize);
 
@@ -123,8 +166,8 @@ public class BlockDamageMapTool : EditorWindow
             outTex.Apply();
 
             string outPath = EditorUtility.SaveFilePanel("Where to save", "", "mytexture"+_seed, "png");
-            byte[] b = outTex.EncodeToPNG();
-            File.WriteAllBytes(outPath, b);
+            byte[] bytes = outTex.EncodeToPNG();
+            File.WriteAllBytes(outPath, bytes);
             AssetDatabase.Refresh();
 
         }
