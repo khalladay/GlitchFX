@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 [RequireComponent(typeof(Camera))]
 public class GlitchFX: MonoBehaviour
@@ -32,14 +31,13 @@ public class GlitchFX: MonoBehaviour
     void UpdateRandom()
     {
         _glitchMat.SetFloat("_GlitchRandom", Random.Range(-1.0f, 1.0f));
-        Invoke("UpdateRandom", Random.Range(0.01f, 0.1f));
+        Invoke("UpdateRandom", Random.Range(0.01f, 0.15f));
 
     }
     // Update is called once per frame
     void Update ()
     {
         glitchAmount = Mathf.Clamp(glitchAmount, 0.0f, 1.0f);
-        _realGlitch = Random.Range(glitchAmount * 0.25f, glitchAmount);
 
         _glitchMat.SetFloat("_ShiftMag", shiftMag);
         _glitchMat.SetFloat("_GlitchAmount", glitchAmount);

@@ -43,7 +43,6 @@
 
 			float _GlitchAmount;
 			float _GlitchRandom;
-			float _ShiftMag;
 
 			float rand(float2 co) 
 			{
@@ -51,18 +50,19 @@
 			}
 
 
-			fixed4 frag (v2f i) : SV_Target
+			fixed4 frag(v2f i) : SV_Target
 			{
-				float4 glitch = (tex2D(_GlitchMap, i.uv));
+				fixed3 glitch = (tex2D(_GlitchMap, i.uv)).rgb;
 
 				float r = (rand(float2(glitch.r, _GlitchRandom)));
-				float gFlag = max(0.0, ceil(r - (1.0 - _GlitchAmount)));
-				
-				float2 uvShift = ((float2(glitch.gb) *2.0 - 1.0) * gFlag * r) * _ShiftMag;
+				float gFlag = max(0.0, ceil(_GlitchAmount-r));
+
+				float2 uvShift = (glitch.gb * 2.0 - 1.0) * gFlag;
+
 				fixed4 col = tex2D(_MainTex, frac(i.uv + uvShift));
-				col.r = 0.0;
 				return col;
 			}
+				
 			ENDCG
 		}
 	}
