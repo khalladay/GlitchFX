@@ -205,13 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520c8715577ab8c4190aadf0c83662b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glitchAmount: 0
-  fxEnabled: 1
-  blockDamage: 1
-  blockDamageType: 3
-  blockColor: {r: 0, g: 0, b: 0, a: 1}
-  blockMagnitude: 1
-  blockTexture: {fileID: 2800000, guid: f6e1b83e6b757c145a64545d78d6257e, type: 3}
+  glitchAmount: 0.2
+  shiftMag: 1
+  blockTexture: {fileID: 2800000, guid: 65121872387ee514da9d5deaa0704716, type: 3}
 --- !u!81 &1655624294
 AudioListener:
   m_ObjectHideFlags: 0

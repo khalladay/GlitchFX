@@ -57,7 +57,7 @@
 				float r = (rand(float2(glitch.r, _GlitchRandom)));
 				float gFlag = max(0.0, ceil(_GlitchAmount-r));
 
-				float2 uvShift = (glitch.gb * 2.0 - 1.0) * gFlag;
+				float2 uvShift = (glitch.gb * 2.0 - 1.0) * r * gFlag;
 
 				fixed4 col = tex2D(_MainTex, frac(i.uv + uvShift));
 				return col;
